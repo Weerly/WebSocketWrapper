@@ -30,6 +30,9 @@ Install-Package Weerlyy.WebSocketWrapper
 
 To start using the WebSocket wrapper, configure routes using `app.UseWebSocketRoutes` by specifying the mapping method (`MapWsRoute` or `MapWsRouteAsync`).
 
+```c#
+also don`t forget to add app.UseWebSockets(); in your startup.cs or program.cs depending on your .NET version.
+```
 ### Example: Mapping WebSocket Routes
 
 ```c#
@@ -202,3 +205,6 @@ The WebSocket wrapper supports dynamic route configurations with the following t
 ## License
 
 This WebSocket wrapper is licensed under the **MIT License**.
+
+## Author
+Developed by Mykhailo Chumak.
