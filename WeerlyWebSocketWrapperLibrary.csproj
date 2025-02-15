@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyName>Weerly.WebSocketWrapper</AssemblyName>
+    <RootNamespace>Weerly.WebSocketWrapper</RootNamespace>
+    <Company>Weerly</Company>
+    <Authors>Mykhailo Chumak</Authors>
+    <Product>WebSocketWrapper</Product>
+    <Version>0.0.0.3</Version>
+    <Copyright>Mykhailo Chumak</Copyright>
+    <PackageLicenseUrl>https://github.com/Weerly/WebSocketWrapper/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Weerly/WebSocketWrapper</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Weerly/WebSocketWrapper</RepositoryUrl>
+    <PackageTags>webSocket, .netCore, mvc</PackageTags>
+    <PackageReleaseNotes>it's alpha version</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageId>Weerly.WebSocketWrapper</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+</Project>

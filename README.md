@@ -1,104 +1,132 @@
-## WebSocketWrapper
+# WebSocketWrapper
+dot net Core library for using with WebSocket
 
-library for Wrapping WebSocket routing in .Net Core
+# Weerly WebSocket Wrapper
 
-### Using :
-you just need to add to Startup.cs _in case of **.netCore MVC**_ or call from **IApplicationBuilder** 
-in both cases first you need to add to the top of the cs file <br>
-`using Weerly.WebSocket.Wrapper.Builder`<br>
-and then add next:
-```C#
-IApplicationBuilder.UseWebSocketRoutes();
+## Overview
+Weerly WebSocket Wrapper is a lightweight .NET 6 library designed to simplify WebSocket routing and connection handling in ASP.NET Core applications. This library provides a structured way to define WebSocket routes and manage WebSocket communication efficiently.
+
+## Features
+## Logic Behind the Example Code
+
+The example demonstrates how to configure WebSocket routing in an ASP.NET Core application using the `Weerly.WebSocketWrapper` library. Below, the code and its logic are explained step by step:
+
+1. **Setup WebSocket Middleware**:
+   - The middleware is configured using the `app.UseWebSocketRoutes` method, which is part of the `Weerly.WebSocketWrapper` library. This enables routing for WebSocket communication.
+
+2. **Defining WebSocket Routes**:
+   - A route is defined using the `routes.MapWsRoute` method. The parameters passed to this method specify the route's name, URL template, processing type, and a reference to the handler class. The route facilitates directing WebSocket traffic.
+
+3. **Supported Options**:
+   - The library supports options like defining the path (`template`) and specifying the handling strategy (`type`, such as `WebSocketEnums.CommonType.Class`) along with the handler class (`classNamespace`).
+
+### Code Walkthrough:
+Here’s how the code translates into routing:
+
+#### Example Code
+```csharp
+app.UseWebSocketRoutes(routes =>
+{
+    routes.MapWsRoute(
+        name: "default",  // Name of the WebSocket route for reference
+        template: "Test/About",  // URL path that WebSocket clients use to connect
+        type: WebSocketEnums.CommonType.Class,  // The type of processing strategy - here, a class
+        classNamespace: "Models.TestClass"  // Fully-qualified name of the class handling connections
+    );
+});
 ```
 
-## Parameters of the _UseWebSocketRoutes_ method :
+####
+- Easy integration with ASP.NET Core applications
+- Fluent API for defining WebSocket routes
+- Supports different WebSocket processing strategies
+- Compatible with .NET 6
 
-```markdown
-1. it's lambda expression which represents an instance of `IWebSocketRouteBuilder`
-   and includes in itself next fields :
-   - `string` name
-   - `string` template
-   - `Weerly.WebSocketWrapper.Enums.WebSocketEnums.CommonType` type (optional) **Default value is  CommonType.Controller** 
-   - `string` classNamespace (optional) **uses for single route when type equals CommonType.Class**
-2. `Weerly.WebSocketWrapper.Enums.WebSocketEnums.CommonType` commonType (optional) **Default value is CommonType.Controller**
-3. `string` commonClassName(optional) **uses when you  want to change default Controller to Call**
-4. `string` classNamespace (optional) **uses for all routes when commonType equals CommonType.Class**
+## Installation
+To install Weerly WebSocket Wrapper, add the package to your project:
+
+```sh
+Install-Package Weerlyy.WebSocketWrapper
 ```
 
-## Rules of routing
-```markdown
-1. names should not:
-   - equals to null, empty or consists only of white-space characters 
-   - duplicate each other
-2. templates have follow patterns:
-   - "Controller(or Class)/method" **it should be specified if class is using by choosing CommonType.Class**
-   - "/method" **by Default WebSocketController will be called**
-   - "{controller=ControllerName}/{action=methodName}"
-   - "{class=ClassName}/{action=methodName}" **in this case you need add class namespace without class name itself**
-   - "/{action=methodName}" **by Default WebSocketController will be called**
-```
-## Examples
-```C#
-1) app.UseWebSocketRoutes(
-		routes =>
-		{
-			routes.MapWSRoute(
-				name: "default", 
-				template: "Test/About",
-				type: CommonType.Class,
-				classNamespace: "Models.TestClass"
-				);
-			routes.MapWSRoute(
-				name: "default3", 
-				template: "Test/About",
-				);
-			routes.MapWSRouteAsync(
-				name: "default1",
-				template: "{controller=Dynma}/{action=Json}");
-			routes.MapWSRouteAsync(
-				name: "default2",
-				template: "/About");
-			routes.MapWSRouteAsync(
-				name: "default3",
-				template: "/Ajason");
-		});
+## Usage
+To use WebSocket routing in your application, add the following middleware configuration:
+
+```csharp
+using Microsoft.AspNetCore.Builder;
+using Weerly.WebSocketWrapper.Builder;
+using Weerly.WebSocketWrapper.Enums;
+
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+
+app.UseWebSocketRoutes(routes =>
+{
+    routes.MapWsRoute(
+        name: "default",
+        template: "Test/About",
+        type: WebSocketEnums.CommonType.Class,
+        classNamespace: "Models.TestClass"
+    );
+});
+
+app.Run();
 ```
 
-## Describe of Examples
-1
-You can use the [editor on GitHub](https://github.com/Weerly/WebSocketWrapper/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Author
+Developed by Mykhailo Chumak.
 
-### Markdown
+---
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+# Weerly WebSocket Wrapper (UA)
 
-```markdown
-Syntax highlighted code block
+## Огляд
+Weerly WebSocket Wrapper — це легка бібліотека для .NET 6, призначена для спрощення маршрутизації та обробки WebSocket-з'єднань у додатках ASP.NET Core. Вона забезпечує структурований спосіб визначення маршрутів WebSocket та ефективного управління з'єднаннями.
 
-# Header 1
-## Header 2
-### Header 3
+## Особливості
+- Легка інтеграція з додатками ASP.NET Core
+- Зручний API для визначення маршрутів WebSocket
+- Підтримка різних стратегій обробки WebSocket
+- Сумісність із .NET 6
 
-- Bulleted
-- List
+## Встановлення
+Щоб встановити Weerly WebSocket Wrapper, додайте пакет до свого проєкту:
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```sh
+Install-Package Weerlyy.WebSocketWrapper
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Використання
+Щоб використовувати маршрутизацію WebSocket у вашому додатку, додайте таку конфігурацію middleware:
 
-### Jekyll Themes
+```csharp
+using Microsoft.AspNetCore.Builder;
+using Weerly.WebSocketWrapper.Builder;
+using Weerly.WebSocketWrapper.Enums;
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Weerly/WebSocketWrapper/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
 
-### Support or Contact
+app.UseWebSocketRoutes(routes =>
+{
+    routes.MapWsRoute(
+        name: "default",
+        template: "Test/About",
+        type: WebSocketEnums.CommonType.Class,
+        classNamespace: "Models.TestClass"
+    );
+});
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+app.Run();
+```
+
+## Ліцензія
+Цей проєкт ліцензовано за умовами ліцензії MIT. Деталі дивіться у файлі LICENSE.
+
+## Автор
+Розроблено Mykhailo Chumak.
+
 
