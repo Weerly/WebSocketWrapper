@@ -1,46 +1,21 @@
-# WebSocketWrapper
-dot net Core library for using with WebSocket
-
 # Weerly WebSocket Wrapper
+
+# Real-Time WebSocket Wrapper for ASP.NET Core Applications
 
 ## Overview
 Weerly WebSocket Wrapper is a lightweight .NET 6 library designed to simplify WebSocket routing and connection handling in ASP.NET Core applications. This library provides a structured way to define WebSocket routes and manage WebSocket communication efficiently.
 
+This project provides a **WebSocket wrapper** for simplifying WebSocket communication and routing in .NET applications. It includes a flexible API for mapping WebSocket routes to handlers with both synchronous and asynchronous processing capabilities.
+
 ## Features
-## Logic Behind the Example Code
-
-The example demonstrates how to configure WebSocket routing in an ASP.NET Core application using the `Weerly.WebSocketWrapper` library. Below, the code and its logic are explained step by step:
-
-1. **Setup WebSocket Middleware**:
-   - The middleware is configured using the `app.UseWebSocketRoutes` method, which is part of the `Weerly.WebSocketWrapper` library. This enables routing for WebSocket communication.
-
-2. **Defining WebSocket Routes**:
-   - A route is defined using the `routes.MapWsRoute` method. The parameters passed to this method specify the route's name, URL template, processing type, and a reference to the handler class. The route facilitates directing WebSocket traffic.
-
-3. **Supported Options**:
-   - The library supports options like defining the path (`template`) and specifying the handling strategy (`type`, such as `WebSocketEnums.CommonType.Class`) along with the handler class (`classNamespace`).
-
-### Code Walkthrough:
-Here’s how the code translates into routing:
-
-#### Example Code
-```csharp
-app.UseWebSocketRoutes(routes =>
-{
-    routes.MapWsRoute(
-        name: "default",  // Name of the WebSocket route for reference
-        template: "Test/About",  // URL path that WebSocket clients use to connect
-        type: WebSocketEnums.CommonType.Class,  // The type of processing strategy - here, a class
-        classNamespace: "Models.TestClass"  // Fully-qualified name of the class handling connections
-    );
-});
-```
-
-####
 - Easy integration with ASP.NET Core applications
 - Fluent API for defining WebSocket routes
 - Supports different WebSocket processing strategies
-- Compatible with .NET 6
+- Compatible with .NET Core starting from version standard 2.0
+- **Dynamic WebSocket Route Mapping**: Quickly define WebSocket routes with `MapWsRoute` and `MapWsRouteAsync`.
+- **Asynchronous and Synchronous Handling**: Support both long-running operations and simple message processing.
+- **Custom Routing Logic**: Routes can point to handler methods in specific classes or controllers.
+- **Real-Time Communication**: Deliver progressive updates using `WebSocketCallback`.
 
 ## Installation
 To install Weerly WebSocket Wrapper, add the package to your project:
@@ -49,84 +24,187 @@ To install Weerly WebSocket Wrapper, add the package to your project:
 Install-Package Weerlyy.WebSocketWrapper
 ```
 
+---
+
 ## Usage
-To use WebSocket routing in your application, add the following middleware configuration:
 
-```csharp
-using Microsoft.AspNetCore.Builder;
-using Weerly.WebSocketWrapper.Builder;
-using Weerly.WebSocketWrapper.Enums;
+To start using the WebSocket wrapper, configure routes using `app.UseWebSocketRoutes` by specifying the mapping method (`MapWsRoute` or `MapWsRouteAsync`).
 
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+```c#
+also don`t forget to add app.UseWebSockets(); in your startup.cs or program.cs depending on your .NET version.
+```
+### Example: Mapping WebSocket Routes
 
+```c#
 app.UseWebSocketRoutes(routes =>
 {
-    routes.MapWsRoute(
+    // Asynchronous WebSocket route
+    routes.MapWsRouteAsync(
         name: "default",
         template: "Test/About",
         type: WebSocketEnums.CommonType.Class,
-        classNamespace: "Models.TestClass"
+        classNamespace: "WebApp1.Models.TestClass"
+    );
+
+    // Synchronous WebSocket route
+    routes.MapWsRoute(
+        name: "sync",
+        template: "Sync/Example",
+        type: WebSocketEnums.CommonType.Class,
+        classNamespace: "WebApp1.Models.TestClass"
     );
 });
-
-app.Run();
 ```
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-## Author
-Developed by Mykhailo Chumak.
 
 ---
 
-# Weerly WebSocket Wrapper (UA)
+## WebSocket Handlers
 
-## Огляд
-Weerly WebSocket Wrapper — це легка бібліотека для .NET 6, призначена для спрощення маршрутизації та обробки WebSocket-з'єднань у додатках ASP.NET Core. Вона забезпечує структурований спосіб визначення маршрутів WebSocket та ефективного управління з'єднаннями.
+### 1. `MapWsRouteAsync` Handler
 
-## Особливості
-- Легка інтеграція з додатками ASP.NET Core
-- Зручний API для визначення маршрутів WebSocket
-- Підтримка різних стратегій обробки WebSocket
-- Сумісність із .NET 6
+Asynchronous handlers are used for `MapWsRouteAsync`. They must have:
+- **Two arguments**:
+   1. `string income`: The incoming WebSocket message.
+   2. `WebSocketCallback callback`: A callback used to send updates back to the client.
+- **Return type**: `Task` (async functions).
 
-## Встановлення
-Щоб встановити Weerly WebSocket Wrapper, додайте пакет до свого проєкту:
+#### Handler Example for `MapWsRouteAsync`
 
-```sh
-Install-Package Weerlyy.WebSocketWrapper
+```c#
+namespace WebApp1.Models.TestClass;
+
+public class Test
+{
+    public async Task About(string income, WebSocketCallback callback)
+    {
+        Console.WriteLine("About method started...");
+
+        // Example: Serialize and process input
+        var serializedInput = JsonConvert.SerializeObject(income);
+        var formattedInput = JsonConvert.SerializeObject(
+            JsonConvert.DeserializeObject<object>(serializedInput), Formatting.None);
+
+        // Send updates to WebSocket client
+        for (var i = 0; i < 1000000; i++)
+        {
+            if (i > 0 && i % 1000 == 0)
+            {
+                await callback($"{i}"); // Send periodic updates
+            }
+        }
+
+        Console.WriteLine("About method completed.");
+    }
+}
 ```
 
-## Використання
-Щоб використовувати маршрутизацію WebSocket у вашому додатку, додайте таку конфігурацію middleware:
+#### Explanation:
+- The handler processes the `income` message asynchronously.
+- Sends progress updates back to the WebSocket client during long-running operations using `callback`.
 
-```csharp
-using Microsoft.AspNetCore.Builder;
-using Weerly.WebSocketWrapper.Builder;
-using Weerly.WebSocketWrapper.Enums;
+---
 
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+### 2. `MapWsRoute` Handler
 
+Synchronous handlers are used for `MapWsRoute`. They must have:
+- **One argument**:
+   - `string income`: The incoming WebSocket message.
+- **Return type**: A single `string` response.
+
+#### Handler Example for `MapWsRoute`
+
+```c#
+namespace WebApp1.Models.TestClass;
+
+public class Test
+{
+    public string About(string income)
+    {
+        Console.WriteLine("Processing About request...");
+
+        // Example: Processing input and returning result
+        for (var i = 0; i < 1000000; i++)
+        {
+            if (i > 0 && i % 1000 == 0)
+            {
+                return $"{i}"; // Return first result divisible by 1000
+            }
+        }
+
+        return "Processing completed.";
+    }
+}
+```
+
+#### Explanation:
+- The handler processes the `income` message synchronously and returns a single response.
+- No `callback` is used since synchronous handlers are one-time, non-progressive operations.
+
+---
+
+## Key Differences Between `MapWsRouteAsync` and `MapWsRoute`
+
+| Feature                     | `MapWsRouteAsync`                                                    | `MapWsRoute`                      |
+|-----------------------------|----------------------------------------------------------------------|------------------------------------|
+| **Arguments**               | `string income, WebSocketCallback callback`                         | `string income`                   |
+| **Response Type**           | Real-time updates via `callback`                                    | Single response `string`          |
+| **Use-Case**                | Long-running or interactive processing                              | Simple one-time processing         |
+
+---
+
+## Full Usage Example
+
+```c#
 app.UseWebSocketRoutes(routes =>
 {
-    routes.MapWsRoute(
-        name: "default",
-        template: "Test/About",
+    // Asynchronous WebSocket route example
+    routes.MapWsRouteAsync(
+        name: "analytics",
+        template: "Analytics/Data",
         type: WebSocketEnums.CommonType.Class,
-        classNamespace: "Models.TestClass"
+        classNamespace: "WebApp1.Models.TestClass"
+    );
+
+    // Synchronous WebSocket route example
+    routes.MapWsRoute(
+        name: "sync",
+        template: "Sync/Example",
+        type: WebSocketEnums.CommonType.Class,
+        classNamespace: "WebApp1.Models.TestClass"
     );
 });
-
-app.Run();
 ```
 
-## Ліцензія
-Цей проєкт ліцензовано за умовами ліцензії MIT. Деталі дивіться у файлі LICENSE.
+Handlers for the routes:
+- Asynchronous route: Adds progressive updates for long-running WebSocket operations (`Test.About` with `callback`).
+- Synchronous route: Adds simple, single-response logic for WebSocket operation (`Test.About`).
 
-## Автор
-Розроблено Mykhailo Chumak.
+---
 
+## Error Handling
 
+1. **Invalid Namespace**:
+   - Ensure the specified `classNamespace` or handler class is correctly provided and exists at runtime.
+
+2. **Callback Misuse** (`MapWsRouteAsync`):
+   - Ensure progressive updates in the async handler use `await callback()` properly.
+
+3. **Wrong Method Signature**:
+   - Ensure handler method signatures match the route type (`Async` or `Non-Async`) and required arguments.
+
+---
+
+## Supported Route Templates
+
+The WebSocket wrapper supports dynamic route configurations with the following templates:
+- **Class or Controller Templates**: Example: `"Controller/Action"` or `"Class/Method"`.
+- **Custom Defined Routes**: Tailor namespace routing to any required structure.
+
+---
+
+## License
+
+This WebSocket wrapper is licensed under the **MIT License**.
+
+## Author
+Developed by Mykhailo Chumak.
