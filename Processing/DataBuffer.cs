@@ -1,21 +1,17 @@
 ﻿using System.Collections.Generic;
+using Weerly.WebSocketWrapper.Abstractions;
 
 namespace Weerly.WebSocketWrapper.Processing
 {
     public class DataBuffer : IDataBuffer
     {
-        public IList<object> Buffer { get; }
-        private int length { get; set; }
-        public int Length { get { return length; }}
+        private IList<object> Buffer { get; } = new List<object>();
+        public int Length { get; private set; }
 
-        public DataBuffer()
-        {
-            Buffer = new List<object>();
-        }
         public IDataBuffer Add(object obj)
         {
             Buffer.Add(obj);
-            length = Buffer.Count;
+            Length = Buffer.Count;
 
             return this;
         }

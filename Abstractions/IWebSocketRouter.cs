@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using static Weerly.WebSocketWrapper.Enums.WebSocketEnums;
+using static Weerly.WebSocketWrapper.WebSocketEnums;
 
-namespace Weerly.WebSocketWrapper.Routing
+namespace Weerly.WebSocketWrapper.Abstractions
 {
     public interface IWebSocketRouter
     {
-        String Name { get; }
-        String Template { get; }
+        string Name { get; }
+        string Template { get; }
         CommonType Type { get; set; }
-        String PathName { get; set; }
-        String ClassNamespace { get; }
-        IDictionary<System.String, System.String> ActionData { get; set; }
-        String[] Types { get; }
-        String[] Patterns { get; }
+        string PathName { get; set; }
+        string ClassNamespace { get; }
+        IDictionary<string, string> ActionData { get; set; }
+        string[] Types { get; }
+        string[] Patterns { get; }
 
-        String GetNamespace(string rootNamespace, string classNamespace);
+        string GetNamespace(string rootNamespace, string classNamespace);
 
 
     }

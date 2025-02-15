@@ -1,17 +1,24 @@
-﻿using System;
-using static Weerly.WebSocketWrapper.Enums.WebSocketEnums;
+﻿using static Weerly.WebSocketWrapper.WebSocketEnums;
 
-namespace Weerly.WebSocketWrapper.Parameters
+namespace Weerly.WebSocketWrapper.Processing
 {
-    public class ParseParameters
+    /// <summary>
+    /// Provides methods for retrieving configured parameters based on the parameter type.
+    /// </summary>
+    public static class ParseParameters
     {
-        public static String[] GetConfiguredParams(ParamsType param)
+        /// <summary>
+        /// Retrieves an array of configured parameters based on the specified parameter type.
+        /// </summary>
+        /// <param name="param">The type of parameter to retrieve.</param>
+        /// <returns>An array of strings representing the configured parameters.</returns>
+        public static string[] GetConfiguredParams(ParamsType param)
         {
-            String[] configuredParams = new string[0];
+            var configuredParams = new string[0];
 
             if (param == ParamsType.Type)
             {
-                configuredParams = new String[5] {
+                configuredParams = new [] {
                     "Controller",
                     "Class",
                     "Controller",
@@ -22,7 +29,7 @@ namespace Weerly.WebSocketWrapper.Parameters
 
             if (param == ParamsType.Template)
             {
-                configuredParams = new String[5] {
+                configuredParams = new [] {
                     "{controller}/{action}",
                     "{class}/{action}",
                     "/{action}",
@@ -33,7 +40,7 @@ namespace Weerly.WebSocketWrapper.Parameters
 
             if (param == ParamsType.Patterns)
             {
-                configuredParams = new string[5]
+                configuredParams = new []
                 {
                     @"^\{controller=([a-zA-Z]+)\}\/\{action=([a-zA-Z]+)\}$",
                     @"^{class=([a-zA-Z]+)\}\/\{action=([a-zA-Z]+)\}$",

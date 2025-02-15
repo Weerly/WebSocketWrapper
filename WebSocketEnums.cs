@@ -1,6 +1,6 @@
-﻿namespace Weerly.WebSocketWrapper.Enums
+﻿namespace Weerly.WebSocketWrapper
 {
-    public class WebSocketEnums
+    public static class WebSocketEnums
     {
         public enum CommonType
         {

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+using Weerly.WebSocketWrapper.Processing;
 using Weerly.WebSocketWrapper.Routing;
 
-namespace Weerly.WebSocketWrapper.Processing
+namespace Weerly.WebSocketWrapper.Abstractions
 {
     /// <summary>
     /// Represents a collection of methods for handling routes
@@ -11,8 +11,8 @@ namespace Weerly.WebSocketWrapper.Processing
     {
         IList<IWebSocketRouter> Routes { get; }
         IWebSocketRouter Router { get; set; }
-        IWebSocketRouteHandler VerifyRouteData(IWebSocketRouter Router);
-        IWebSocketRouteHandler AddRouteData(IWebSocketRouter Router);
+        IWebSocketRouteHandler VerifyRouteData(IWebSocketRouter router);
+        IWebSocketRouteHandler AddRouteData(IWebSocketRouter router);
         void Build(IWebSocketRouteBuilder builder);
     }
 }

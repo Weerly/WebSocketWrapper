@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using Weerly.WebSocketWrapper.Abstractions;
 using Weerly.WebSocketWrapper.Processing;
-using static Weerly.WebSocketWrapper.Enums.WebSocketEnums;
+using static Weerly.WebSocketWrapper.WebSocketEnums;
 
 namespace Weerly.WebSocketWrapper.Routing
 {
     public class WebSocketRouteBuilder : IWebSocketRouteBuilder
     {
         public CommonType CommonType { get; }
-        public String CommonClassNamespace { get; }
-        public String CommonClass { get; }
-        public String RootNamespace { get; }
+        public string CommonClassNamespace { get; }
+        public string CommonClass { get; }
+        public string RootNamespace { get; }
         public IWebSocketRouteHandler RouteHandler { get; }
         public IList<IWebSocketRouter> Routes { get; }
         public HttpContext Context { get; }

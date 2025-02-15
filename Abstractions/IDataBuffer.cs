@@ -1,4 +1,4 @@
-﻿namespace Weerly.WebSocketWrapper.Processing
+﻿namespace Weerly.WebSocketWrapper.Abstractions
 {
     public interface IDataBuffer
     {
