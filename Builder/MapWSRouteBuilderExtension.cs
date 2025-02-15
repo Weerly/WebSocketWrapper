@@ -10,6 +10,10 @@ namespace Weerly.WebSocketWrapper.Builder
     /// </summary>
     public static class WebSocketRouteBuilderExtension
     {
+        static WebSocketRouteBuilderExtension()
+        {
+        }
+
         /// <summary>
         /// Asynchronously maps a WebSocket route with a specified name and template.
         /// </summary>
@@ -19,12 +23,27 @@ namespace Weerly.WebSocketWrapper.Builder
         /// <returns>The updated WebSocket route builder.</returns>
         public static IWebSocketRouteBuilder MapWsRouteAsync(this IWebSocketRouteBuilder wsRouteBuilder, string name, string template)
         {
-            if (!wsRouteBuilder.ContextPathFound)
-            {
-                var type = GetDefaultType(wsRouteBuilder);
-                var classNamespace = GetDefaultClassNamespace(wsRouteBuilder);
-                OperateWebSocketRouter(wsRouteBuilder, name, template, type, classNamespace);
-            }
+            if (wsRouteBuilder.ContextPathFound) return wsRouteBuilder;
+            var type = GetDefaultType(wsRouteBuilder);
+            var classNamespace = GetDefaultClassNamespace(wsRouteBuilder);
+            OperateWebSocketRouter(wsRouteBuilder, name, template, type, classNamespace, true);
+
+            return wsRouteBuilder;
+        }
+        
+        /// <summary>
+        /// Asynchronously maps a WebSocket route with a specified name and template.
+        /// </summary>
+        /// <param name="wsRouteBuilder">The WebSocket route builder.</param>
+        /// <param name="name">The name of the WebSocket route.</param>
+        /// <param name="template">The template for the WebSocket route.</param>
+        /// /// <param name="type">The common type for the WebSocket route.</param>
+        /// <param name="classNamespace">The class namespace for the WebSocket route.</param>
+        /// <returns>The updated WebSocket route builder.</returns>
+        public static IWebSocketRouteBuilder MapWsRouteAsync(this IWebSocketRouteBuilder wsRouteBuilder, string name, string template, CommonType type, string classNamespace)
+        {
+            if (wsRouteBuilder.ContextPathFound) return wsRouteBuilder;
+            OperateWebSocketRouter(wsRouteBuilder, name, template, type, classNamespace, true);
 
             return wsRouteBuilder;
         }
@@ -39,11 +58,9 @@ namespace Weerly.WebSocketWrapper.Builder
         /// <returns>The updated WebSocket route builder.</returns>
         public static IWebSocketRouteBuilder MapWsRoute(this IWebSocketRouteBuilder wsRouteBuilder, string name, string template, CommonType type)
         {
-            if (!wsRouteBuilder.ContextPathFound)
-            {
-                var classNamespace = GetDefaultClassNamespace(wsRouteBuilder);
-                OperateWebSocketRouter(wsRouteBuilder, name, template, type, classNamespace);
-            }
+            if (wsRouteBuilder.ContextPathFound) return wsRouteBuilder;
+            var classNamespace = GetDefaultClassNamespace(wsRouteBuilder);
+            OperateWebSocketRouter(wsRouteBuilder, name, template, type, classNamespace, false);
 
             return wsRouteBuilder;
         }
@@ -59,10 +76,8 @@ namespace Weerly.WebSocketWrapper.Builder
         /// <returns>The updated WebSocket route builder.</returns>
         public static IWebSocketRouteBuilder MapWsRoute(this IWebSocketRouteBuilder wsRouteBuilder, string name, string template, CommonType type, string classNamespace)
         {
-            if (!wsRouteBuilder.ContextPathFound)
-            {
-                OperateWebSocketRouter(wsRouteBuilder, name, template, type, classNamespace);
-            }
+            if (wsRouteBuilder.ContextPathFound) return wsRouteBuilder;
+            OperateWebSocketRouter(wsRouteBuilder, name, template, type, classNamespace, false);
 
             return wsRouteBuilder;
         }
@@ -108,9 +123,11 @@ namespace Weerly.WebSocketWrapper.Builder
         /// <param name="template">The template for the WebSocket route.</param>
         /// <param name="type">The common type for the WebSocket route.</param>
         /// <param name="classNamespace">The class namespace for the WebSocket route.</param>
-        private static void OperateWebSocketRouter(IWebSocketRouteBuilder wsRouteBuilder, string name, string template, CommonType type, string classNamespace)
+        /// <param name="isAsync">identify is method needs to be async</param>
+        private static void OperateWebSocketRouter(IWebSocketRouteBuilder wsRouteBuilder, string name, string template,
+            CommonType type, string classNamespace, bool isAsync)
         {
-            IWebSocketRouter router = new WebSocketRouter(name, template, type, classNamespace);
+            IWebSocketRouter router = new WebSocketRouter(name, template, type, classNamespace, isAsync);
             var routeProcessor = wsRouteBuilder.RouteHandler;
             routeProcessor?.VerifyRouteData(router).AddRouteData(router).Build(wsRouteBuilder);
         }

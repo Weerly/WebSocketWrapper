@@ -7,6 +7,36 @@ dot net Core library for using with WebSocket
 Weerly WebSocket Wrapper is a lightweight .NET 6 library designed to simplify WebSocket routing and connection handling in ASP.NET Core applications. This library provides a structured way to define WebSocket routes and manage WebSocket communication efficiently.
 
 ## Features
+## Logic Behind the Example Code
+
+The example demonstrates how to configure WebSocket routing in an ASP.NET Core application using the `Weerly.WebSocketWrapper` library. Below, the code and its logic are explained step by step:
+
+1. **Setup WebSocket Middleware**:
+   - The middleware is configured using the `app.UseWebSocketRoutes` method, which is part of the `Weerly.WebSocketWrapper` library. This enables routing for WebSocket communication.
+
+2. **Defining WebSocket Routes**:
+   - A route is defined using the `routes.MapWsRoute` method. The parameters passed to this method specify the route's name, URL template, processing type, and a reference to the handler class. The route facilitates directing WebSocket traffic.
+
+3. **Supported Options**:
+   - The library supports options like defining the path (`template`) and specifying the handling strategy (`type`, such as `WebSocketEnums.CommonType.Class`) along with the handler class (`classNamespace`).
+
+### Code Walkthrough:
+Here’s how the code translates into routing:
+
+#### Example Code
+```csharp
+app.UseWebSocketRoutes(routes =>
+{
+    routes.MapWsRoute(
+        name: "default",  // Name of the WebSocket route for reference
+        template: "Test/About",  // URL path that WebSocket clients use to connect
+        type: WebSocketEnums.CommonType.Class,  // The type of processing strategy - here, a class
+        classNamespace: "Models.TestClass"  // Fully-qualified name of the class handling connections
+    );
+});
+```
+
+####
 - Easy integration with ASP.NET Core applications
 - Fluent API for defining WebSocket routes
 - Supports different WebSocket processing strategies

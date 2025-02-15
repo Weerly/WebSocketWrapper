@@ -1,5 +1,8 @@
 ﻿namespace Weerly.WebSocketWrapper
 {
+    /// <summary>
+    /// Provides a collection of enumerations used in the WebSocketWrapper library.
+    /// </summary>
     public static class WebSocketEnums
     {
         public enum CommonType

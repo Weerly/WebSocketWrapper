@@ -129,7 +129,6 @@ namespace Weerly.WebSocketWrapper.Processing
                 if (match.Success)
                 {
                     var urlType = router.Type.ToString() ?? router.Types[index];
-                    Console.WriteLine(urlType);
                     var len = match.Groups.Count;
                     var handlers = new string[len];
                     handlers[0] = "/";

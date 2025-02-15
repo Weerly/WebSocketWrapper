@@ -5,6 +5,10 @@ using static Weerly.WebSocketWrapper.WebSocketEnums;
 
 namespace Weerly.WebSocketWrapper.Abstractions
 {
+    /// <summary>
+    /// Interface for defining WebSocket route builder functionality.
+    /// Used to create and manage WebSocket route configurations.
+    /// </summary>
     public interface IWebSocketRouteBuilder
     {
         HttpContext Context { get; }
